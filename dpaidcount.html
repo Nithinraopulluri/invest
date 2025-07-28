@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daily Paid Subscribers Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: white;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .dashboard-container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .title {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .cards-container {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            position: relative;
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out;
+            border-left: 8px solid #007bff;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card h2 {
+            font-size: 16px;
+            color: black;
+            margin-bottom: 5px;
+        }
+
+        .card p {
+            font-size: 24px;
+            font-weight: bold;
+            color: black;
+        }
+
+        /* Right-Side Full-Length Semi-Circle */
+        .card::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 90px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 100px 0 0 100px;
+        }
+
+        /* Different Card Styles */
+        .card-1 {
+            border-left-color: #FF5733;
+        }
+
+        .card-2 {
+            border-left-color: #28A745;
+        }
+
+        .card-3 {
+            border-left-color: #FFC300;
+        }
+        .card-4 {
+            border-left-color: red;
+        }
+
+        /* Icons inside semicircle */
+        .icon-circle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 26px;
+            transform: translateY(-50%);
+            color: white;
+        }
+
+    .semicircle {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 40px;
+      background: #007bff;
+      border-radius: 100px 0 0 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 30px;
+    }
+
+    .semicircle.red { background: #e74c3c; }
+    .semicircle.green { background: #2ecc71; }
+    .semicircle.orange { background: #f39c12; }
+
+    .charts-container {
+        margin-top: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .chart-box {
+        flex: 2;
+      min-width: 300px;
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .chart-box1 {
+        flex: 1;
+      min-width: 300px;
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .chart-box h4 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: black;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+    }
+    .header { 
+      width: 95%;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 30px;
+            background: linear-gradient(to right, #a80077, #66ccff);
+            color: white;
+            border-radius: 10px;
+        }
+    @media (max-width: 768px) {
+      .charts-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <div class="header">Daily Paid Subscribers Overview</div>
+    <br>
+
+    <!-- Cards Section -->
+    <div class="cards-container">
+      <div class="card card-1"><div>
+        <h4>Today Paid Subscribers</h4>
+        <p>860</p></div>
+        <div class="icon-circle" style="background: blue;">
+          <i class="fa-solid fa-user-check"></i></div>
+      </div>
+
+      <div class="card card-2"><div>
+        <h3>New Daily Signups</h3>
+        <p>430</p></div>
+        <div class="icon-circle" style="background: #28A745;">
+          <i class="fa-solid fa-user-plus"></i></div>
+      </div>
+
+      <div class="card card-3"><div>
+        <h3>Demo-Paid convert </h3>
+        <p>165</p></div>
+        <div class="icon-circle" style="background: #FFC300;">
+          <i class="fa-solid fa-user-shield"></i></div>
+      </div>
+
+      <div class="card card-4"><div>
+        <h3>Daily Lost Users</h3>
+        <p>22</p></div>
+        <div class="icon-circle" style="background: red;">
+          <i class="fa-solid fa-user-slash"></i></div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-container">
+      <div class="chart-box">
+        <h4>Subscribers Over Past 7 Days</h4>
+        <canvas id="dailyChart"></canvas>
+      </div>
+
+      <div class="chart-box1">
+        <h4>Daily Conversion Breakdown</h4>
+        <canvas id="conversionChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ctx1 = document.getElementById('dailyChart').getContext('2d');
+    new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+          label: 'Paid Subscribers',
+          data: [700, 750, 820, 790, 860, 900, 870],
+          backgroundColor: [/*'#FF5733', '#FFC300', '#36A2EB', '#4BC0C0',*/ '#9966FF',/* '#28A745', '#E74C3C'*/],
+          borderRadius: 0
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: "black" } },
+          y: { beginAtZero: true, grid: { color: "#eee" }, ticks: {color: "black"} }
+        }
+      }
+    });
+
+    const ctx2 = document.getElementById('conversionChart').getContext('2d');
+    new Chart(ctx2, {
+      type: 'doughnut',
+      data: {
+        labels: ['New Paid', 'Conversions', 'Others'],
+        datasets: [{
+          label: 'Users',
+          data: [430, 165, 265],
+          backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56']
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

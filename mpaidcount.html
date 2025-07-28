@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Paid Subscribers Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: white;
+
+
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .dashboard-container {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Cards Section */
+        .cards-container {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            position: relative;
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out;
+            border-left: 8px solid #007bff;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card h2 {
+            font-size: 16px;
+            color: black;
+            margin-bottom: 5px;
+        }
+
+        .card p {
+            font-size: 24px;
+            font-weight: bold;
+            color: black;
+        }
+
+        /* Right-Side Full-Length Semi-Circle */
+        .card::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 90px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 100px 0 0 100px;
+        }
+
+        /* Different Card Styles */
+        .card-1 {
+            border-left-color: #FF5733;
+        }
+
+        .card-2 {
+            border-left-color: #28A745;
+        }
+
+        .card-3 {
+            border-left-color: #FFC300;
+        }
+
+        /* Icons inside semicircle */
+        .icon-circle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 26px;
+            transform: translateY(-50%);
+            color: white;
+        }
+
+        /* Charts Section */
+        .charts {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+
+        .chart-container {
+            flex: 2;
+            width: 110%;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container1 {
+            flex: 1;
+            width: 110%;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        canvas {
+            width: 100% !important;
+            height: auto !important;
+        }
+        .header { 
+            width: 95%;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 30px;
+            background: linear-gradient(to right, #a80077, #66ccff);
+            color: white;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 900px) {
+            .cards-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <div class="header">Monthly Paid Subscribers Overview</div>
+<br>
+        <!-- Cards Section -->
+         <br>
+        <div class="cards-container">
+            <div class="card card-1">
+                <div>
+                    <h2>Monthly Paid Subscribers</h2>
+                    <p>2,300</p>
+                </div>
+                <div class="icon-circle" style="background: #FF5733;">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+            </div>
+            <div class="card card-2">
+                <div>
+                    <h2>New Monthly Signups</h2>
+                    <p>1,150</p>
+                </div>
+                <div class="icon-circle" style="background: #28A745;">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+            </div>
+
+            <div class="card card-3">
+                <div>
+                    <h2>Monthly signup Rate</h2>
+                    <p>5.2%</p>
+                </div>
+                <div class="icon-circle" style="background: #FFC300;">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts">
+            <div class="chart-container">
+                <h2>Monthly Subscribers Growth</h2>
+                <canvas id="subscribersChart"></canvas>
+            </div>
+            <div class="chart-container1">
+                <h2>New vs Retained Subscribers</h2>
+                <canvas id="subscribersPieChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Monthly Subscribers Chart
+        const ctx1 = document.getElementById('subscribersChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Subscribers',
+                    data: [1800, 1600, 1700, 1800, 1700, 2100, 2000, 2300, 2400, 2200, 2600, 2700],
+                    backgroundColor: [/*'#FF5733', '#FFC300', '#36A2EB', '#4BC0C0', '#9966FF',*/ '#FF9F40', /*'#28A745', '#E74C3C', '#8E44AD', '#3498DB', '#2ECC71', '#D35400'*/],
+                    borderRadius: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: "#333" }
+                    },
+                    y: {
+                        grid: { color: "#ddd" },
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // Subscribers Pie Chart
+        const ctx2 = document.getElementById('subscribersPieChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: ['New Subscribers', 'Retained Subscribers'],
+                datasets: [{
+                    label: 'Subscriber Ratio',
+                    data: [45, 55],
+                    backgroundColor: ['#36A2EB', '#FF6384']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
+

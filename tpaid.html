@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <title>Dashboard</title>
+    <style>
+        body {
+            display: flex;
+            background: white;
+            font-family: 'Inter', sans-serif;
+
+        }
+       
+        .main-content {
+            width: 100%;
+            padding: 10px;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        /* Small Scrollbar */
+        ::-webkit-scrollbar {
+           display: none;
+        }
+        .container {
+            width: 100%;
+            margin-right: 20px;
+        }
+
+        h2 {
+            align-items: center;
+            text-align: center;
+            color: black;
+        }
+
+        
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border-bottom: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background: #D9EDBF;
+            color: black;
+        }
+        
+        tr:hover {
+            background: #e9ecef;
+        }
+        
+        .no-records {
+            display: none;
+            font-size: 20px;
+            color: black;
+            margin-top: 20px;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .no-records i {
+            font-size: 30px;
+            color: black;
+           
+        }
+.search-container {
+    display: flex;
+    align-items: center;
+    border: none;
+    border-radius: 40px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1), -2px -2px 5px rgb(0, 0, 0, 0.1);
+    outline: none;
+    padding: 8px ;
+    width: 300px;
+}
+
+.search-container input {
+    border: none;
+    border-radius: 25px;
+    outline: none;
+    padding: 1px;
+    font-size: 16px;
+    color: black;
+    width: 100%;
+}
+
+.search-container i {
+    margin-right: 10px;
+    background: none;
+    border: none;
+    color: black;
+    cursor: pointer;
+    padding: 5px;
+}
+.add-btn {
+    background: #007bff;
+    color: white;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            position: absolute;
+            right: 22px;
+            top: 120px;
+
+        }
+        .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: black;
+    }
+    .form-group input
+     {
+      width: 96%;
+      padding: 12px 15px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      background-color: #f9fafb;
+      font-size: 14px;
+      color: black;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: #57B4BA;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+        .btn {
+            padding: 8px 12px;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .view-btn {
+            background: #007bff;
+            color: white;
+        }
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+        /* Popup Styling */
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+        .formup-container {
+            display: none;
+            position: absolute;
+            margin-top: 490px;
+            margin-bottom: 20px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+        .overlay {
+            position: fixed;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(128,128,128,0.6);
+            z-index: 1000;
+            display: none;
+        }
+        .popup {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            position: relative;
+        }
+        .popup1 {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 70%;
+            margin-bottom: 200px;
+            position: relative;
+        }
+        .popup h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .popup-content p {
+            margin: 5px 0;
+            font-size: 16px;
+            display: grid;
+            grid-template-columns: 150px auto;
+            row-gap: 15px;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            color: red;
+        }
+        .blurred {
+            filter: blur(5px);
+            background-color: rgba(128,128,128,0.6);
+
+        }
+        .error-message { 
+    color: red; 
+    font-size: 12px; 
+}
+.header { 
+    width: 95%;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 30px;
+            background: linear-gradient(to right, #a80077, #66ccff);
+            color: white;
+            border-radius: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    
+
+    <!-- Main Content -->
+    <div class="main-content" id="container">
+
+   <div class="header">Total Paid Subscriber List</div>
+<br>
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search..." >
+    <i class="fa-solid fa-search search-icon" onclick="searchTable()"></i>
+</div>
+<button class="btn add-btn" onclick="openAddForm()">Add User</button>
+
+    <table id="subscribersTable">
+        
+        <thead>
+            <tr>
+                <th>Sl.No</th>
+                <th>Date</th>
+                <th>Referral ID</th>
+                <th>Trading View ID</th>
+                <th>Payment Confirm</th>
+                <th>Commission</th>
+                <th>Expiry Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <tr  data-full-details='{"Phone":"9876543210","Email":"user1@example.com","Plan":"Premium","Pricing":"₹1000","RemainingDays":"30"}'>
+                <td>1</td>
+                <td>2025-03-18</td>
+                <td>REF123</td>
+                <td>TV12345</td>
+                <td>Paid</td>
+                <td>₹200</td>
+                <td>2025-06-01</td>
+                <td>
+                    <button class="btn view-btn" onclick="viewDetails(this)">View</button>
+                    <button class="btn delete-btn" onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+            <tr  data-full-details='{"Phone":"9876543214","Email":"user5@example.com","Plan":"Premium","Pricing":"₹3000","RemainingDays":"30"}'>
+                <td>2</td>
+                <td>2025-03-18</td>
+                <td>REF127</td>
+                <td>TV12350</td>
+                <td>Paid</td>
+                <td>₹300</td>
+                <td>2025-06-01</td>
+                <td>
+                    <button class="btn view-btn" onclick="viewDetails(this)">View</button>
+                    <button class="btn delete-btn" onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+            <tr  data-full-details='{"Phone":"9876543211","Email":"user2@example.com","Plan":"Premium","Pricing":"₹5000","RemainingDays":"30"}'>
+                <td>3</td>
+                <td>2025-03-18</td>
+                <td>REF124</td>
+                <td>TV12347</td>
+                <td>Paid</td>
+                <td>₹500</td>
+                <td>2025-06-01</td>
+                <td>
+                    <button class="btn view-btn" onclick="viewDetails(this)">View</button>
+                    <button class="btn delete-btn" onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+            <tr  data-full-details='{"Phone":"9876543212","Email":"user3@example.com","Plan":"Premium","Pricing":"₹10000","RemainingDays":"30"}'>
+                <td>4</td>
+                <td>2025-03-18</td>
+                <td>REF125</td>
+                <td>TV12348</td>
+                <td>Paid</td>
+                <td>₹1200</td>
+                <td>2025-06-01</td>
+                <td>
+                    <button class="btn view-btn" onclick="viewDetails(this)">View</button>
+                    <button class="btn delete-btn" onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+            <tr  data-full-details='{"Phone":"9876543213","Email":"user4@example.com","Plan":"Premium","Pricing":"₹20000","RemainingDays":"30"}'>
+                <td>5</td>
+                <td>2025-03-18</td>
+                <td>REF126</td>
+                <td>TV12349</td>
+                <td>Paid</td>
+                <td>₹2200</td>
+                <td>2025-06-01</td>
+                <td>
+                    <button class="btn view-btn" onclick="viewDetails(this)">View</button>
+                    <button class="btn delete-btn" onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+            <tr  data-full-details='{"Phone":"9876543220","Email":"user6@example.com","Plan":"Premium","Pricing":"₹30000","RemainingDays":"30"}'>
+                <td>6</td>
+                <td>2025-03-18</td>
+                <td>REF128</td>
+                <td>TV12351</td>
+                <td>Paid</td>
+                <td>₹3200</td>
+                <td>2025-06-01</td>
+                <td>
+                    <button class="btn view-btn" onclick="viewDetails(this)">View</button>
+                    <button class="btn delete-btn" onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="no-records" id="noRecords">
+        <img  src="C:\Users\LENOVO L480\Desktop\photos\nodata3.png" style="height: 300px; width: 300px; margin-top: -30px;">
+
+    </div>
+</div>
+
+<!-- View Popup -->
+<div class="popup-container" id="viewPopup">
+    <div class="popup">
+        <span class="close-btn" onclick="closePopup()">×</span>
+        <h2>Details</h2>
+        <div class="popup-content" id="popupContent"></div>
+    </div>
+</div>
+
+<!-- Add Entry Popup -->
+<div class="formup-container" id="addPopup">
+    <div class="popup1">
+        <span class="close-btn" onclick="closeAddPopup()">×</span>
+        <h2 style="text-align: center;">Add New User</h2>
+        <div class="form-group">
+            <label>Date:</label>
+                <input type="date" id="date">
+                <div class="error-message" id="dateError"></div></div>
+                <div class="form-group">
+                    <label>referral Id</label>
+                <input type="text" id="referralId" placeholder="Referral ID (AAA123)">
+                <div class="error-message" id="referralIdError"></div></div>
+                <div class="form-group">
+                    <label>TradingView Id</label>
+                <input type="text" id="tradingViewId" placeholder="Trading View ID (AA123)">
+                <div class="error-message" id="tradingViewIdError"></div></div>
+                <div class="form-group">
+                    <label>payment Confirm</label>
+                <input type="text" id="paymentConfirm" placeholder="Paid/NotPaid">
+                <div class="error-message" id="paymentConfirmError"></div></div>
+                <div class="form-group">
+                    <label>Commission</label>
+                <input type="text" id="commission" placeholder="Commission (₹)">
+                <div class="error-message" id="commissionError"></div></div>
+                <div class="form-group">
+                <label>Expiry Date:</label>
+                <input type="date" id="expiryDate">
+                <div class="error-message" id="expiryDateError"></div></div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                <input type="text" id="phone" placeholder="Phone (10 digits)">
+                <div class="error-message" id="phoneError"></div></div>
+                <div class="form-group">
+                    <label>Email</label>
+                <input type="email" id="email" placeholder="Email">
+                <div class="error-message" id="emailError"></div></div>
+                <div class="form-group">
+                    <label>Plan</label>
+                <input type="text" id="plan" placeholder="Plan">
+                <div class="error-message" id="planError"></div></div>
+                <div class="form-group">
+                    <label>Pricing</label>
+                <input type="text" id="pricing" placeholder="Pricing (₹)">
+                <div class="error-message" id="pricingError"></div></div>
+                <div class="form-group">
+                    <label>Remaining Days</label>
+                <input type="text" id="remainingDays" placeholder="Remaining Days">
+                <div class="error-message" id="remainingDaysError"></div></div>
+
+                <button class="submit-btn" onclick="addEntry()">Add</button>
+        </div>
+    </div>
+</div>
+
+<script>
+   
+
+    function viewDetails(button) {
+        let row = button.closest("tr");
+        let fullDetails = JSON.parse(row.getAttribute("data-full-details"));
+
+        let details = `
+            <p><strong>Phone</strong> ${fullDetails.Phone}</p>
+            <p><strong>Email</strong> ${fullDetails.Email}</p>
+            <p><strong>Plan</strong> ${fullDetails.Plan}</p>
+            <p><strong>Pricing</strong> ${fullDetails.Pricing}</p>
+            <p><strong>Remaining Days</strong> ${fullDetails.RemainingDays}</p>
+        `;
+        document.getElementById("popupContent").innerHTML = details;
+        document.getElementById("viewPopup").style.display = "flex";
+        document.getElementById("container").classList.add("blurred");
+
+    }
+
+    function closePopup() {
+        document.getElementById("viewPopup").style.display = "none";
+        document.getElementById("container").classList.remove("blurred");
+
+    }
+
+    function deleteRow(button) {
+        if (confirm("Are you sure you want to delete this entry?")) {
+            button.closest("tr").remove();
+        }
+    }
+
+    function openAddForm() {
+        document.getElementById("addPopup").style.display = "flex";
+        document.getElementById("container").classList.add("blurred");
+
+    }
+
+    function closeAddPopup() {
+        document.getElementById("addPopup").style.display = "none";
+        document.getElementById("container").classList.remove("blurred");
+
+    }
+    function validateInput(id, pattern, errorMessage) {
+    let input = document.getElementById(id);
+    let errorDiv = document.getElementById(id + "Error");
+
+    if (!pattern.test(input.value)) {
+        errorDiv.innerText = errorMessage;
+        return false;
+    }
+
+    errorDiv.innerText = "";
+    return true;
+}
+
+function addEntry() {
+    let isValid = true;
+
+    isValid &= validateInput("referralId", /^[A-Z]{3}\d{3}$/, "Format: AAA123");
+    isValid &= validateInput("tradingViewId", /^[A-Z]{2}\d{3}$/, "Format: AA123");
+    isValid &= validateInput("paymentConfirm", /^(Paid|NotPaid)$/i, "Enter 'Paid' or 'NotPaid'");
+    isValid &= validateInput("commission", /^\d+$/, "Enter a valid amount");
+    isValid &= validateInput("phone", /^\d{10}$/, "Enter a valid 10-digit phone number");
+    isValid &= validateInput("email", /^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Enter a valid email");
+    isValid &= validateInput("pricing", /^\d+$/, "Enter a valid amount");
+    isValid &= validateInput("remainingDays", /^\d+$/, "Enter a valid number");
+
+    if (!isValid) return;
+
+    let tableBody = document.getElementById("table-body");
+    let newRow = document.createElement("tr");
+
+    let fullDetails = {
+        Phone: document.getElementById("phone").value,
+        Email: document.getElementById("email").value,
+        Plan: document.getElementById("plan").value,
+        Pricing: document.getElementById("pricing").value,
+        RemainingDays: document.getElementById("remainingDays").value
+    };
+
+    newRow.setAttribute("data-full-details", JSON.stringify(fullDetails));
+
+    newRow.innerHTML = `
+        <td>${tableBody.children.length + 1}</td>
+        <td>${document.getElementById("date").value}</td>
+        <td>${document.getElementById("referralId").value}</td>
+        <td>${document.getElementById("tradingViewId").value}</td>
+        <td>${document.getElementById("paymentConfirm").value}</td>
+        <td>${document.getElementById("commission").value}</td>
+        <td>${document.getElementById("expiryDate").value}</td>
+        <td>
+            <button class="btn view-btn" onclick="viewDetails(this)">View</button>
+            <button class="btn delete-btn" onclick="deleteRow(this)">Delete</button>
+        </td>
+    `;
+   
+    tableBody.appendChild(newRow);
+    closeAddPopup();
+}
+    function searchTable() {
+            let input = document.getElementById("searchInput").value.trim();
+            let table = document.getElementById("subscribersTable");
+            let rows = table.getElementsByTagName("tr");
+            let noRecordsMessage = document.getElementById("noRecords");
+
+           
+            let found = false;
+
+            for (let i = 1; i < rows.length; i++) {
+                let rowText = rows[i].textContent.trim();
+                if (rowText.includes(input)) {
+                    rows[i].style.display = "";
+                    found = true;
+                } else {
+                    rows[i].style.display = "none";
+                }
+
+            }
+
+            // Show "No Records Found" if nothing matches
+            noRecordsMessage.style.display = found ? "none" : "flex";
+        }
+        document.getElementById("searchInput").addEventListener("keyup", function(){
+            if(this.value === "" ) {
+                let table = document.getElementById("subscribersTable");
+                let rows = table.getElementsByTagName("tr");
+                for (let i = 1; i < rows.length; i++) {
+                    rows[i].style.display = "";
+                }
+                document.getElementById("noRecordsMessage").style.display = "none";
+            }
+        });
+       
+</script>
+
+</body>
+</html>
+

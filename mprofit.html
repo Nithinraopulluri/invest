@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Profit Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background: white;
+            padding: 30px;
+        }
+        .header {
+            width: 100%;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 30px;
+            background: linear-gradient(to right, #a80077, #66ccff);
+            color: white;
+            border-radius: 10px;
+        }
+
+        
+
+        /* Cards */
+        .cards {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .card {
+            position: relative;
+            width: 350px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card i {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: black;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #3498db, #8e44ad);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .card:nth-child(1)::before { background: linear-gradient(135deg, #ff6b6b, #ff4757); }
+        .card:nth-child(2)::before { background: linear-gradient(135deg, #1abc9c, #16a085); }
+        .card:nth-child(3)::before { background: linear-gradient(135deg, #f39c12, #e67e22); }
+
+        .card:nth-child(1) i { color: #ff4757; }
+        .card:nth-child(2) i { color: #16a085; }
+        .card:nth-child(3) i { color: #e67e22; }
+
+        /* Charts */
+        .charts {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            margin-top: 40px;
+            justify-content: center;
+        }
+
+        .chart-container {
+            width: 100%;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        canvas {
+            width: 100% !important;
+            height: auto !important;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">Monthly Profit Overview</div>
+    <br>
+    <!-- Profit Cards -->
+    <div class="cards">
+        <div class="card">
+            <i class="fas fa-chart-line"></i>
+            <h3>₹5,40,000</h3>
+            <p>Average Monthly Profit</p>
+        </div>
+        <div class="card">
+            <i class="fas fa-coins"></i>
+            <h3>₹18,000</h3>
+            <p>Average Daily Profit</p>
+        </div>
+        <div class="card">
+            <i class="fas fa-trophy"></i>
+            <h3>March</h3>
+            <p>Best Month (₹6,20,000)</p>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts">
+        <div class="chart-container">
+            <canvas id="barChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="lineChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Bar Chart - Monthly Profit
+    var ctx1 = document.getElementById("barChart").getContext("2d");
+    var barChart = new Chart(ctx1, {
+        type: "bar",
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [{
+                label: "Profit (₹)",
+                data: [450000, 520000, 610000, 500000, 530000, 540000, 570000, 580000, 590000, 600000, 620000, 650000],
+                backgroundColor: [
+                     "#ff6b6b", 
+                ],
+                borderRadius: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    ticks:{
+                        callback: function(value) {
+                            if(value >= 100000) return (value/1000) + 'k';
+                        }
+                    }
+                }
+            }
+           
+        }
+    });
+
+    // Line Chart - Profit Trends
+    var ctx2 = document.getElementById("lineChart").getContext("2d");
+    var lineChart = new Chart(ctx2, {
+        type: "line",
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [{
+                label: "Profit Trend",
+                data: [450000, 520000, 610000, 500000, 530000, 540000, 570000, 580000, 590000, 600000, 620000, 650000],
+                borderColor: "#3498db",
+                backgroundColor: "rgba(52, 152, 219, 0.2)",
+                borderWidth: 3,
+                pointBackgroundColor: "#2980b9",
+                pointBorderColor: "#fff",
+                pointRadius: 5,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    ticks:{
+                        callback: function(value) {
+                            if(value >= 100000) return (value/1000) + 'k';
+                        }
+                    }
+                }
+            }
+           
+        }
+    });
+</script>
+
+</body>
+</html>

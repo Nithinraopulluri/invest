@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Profit Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: white;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .dashboard-container {
+            width: 100%;
+        }
+        .header { 
+            width: 95%;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 30px;
+            background: linear-gradient(to right, #a80077, #66ccff);
+            color: white;
+            border-radius: 10px;
+        }
+
+        /* Cards Section */
+        .cards-container {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            position: relative;
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out;
+            border-left: 8px solid #007bff;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card h2 {
+            font-size: 16px;
+            color: black;
+            margin-bottom: 5px;
+        }
+
+        .card p {
+            font-size: 24px;
+            font-weight: bold;
+            color: black;
+        }
+
+        /* Right-Side Full-Length Semi-Circle */
+        .card::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 90px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 100px 0 0 100px;
+        }
+
+        /* Different Card Styles */
+        .card-1 {
+            border-left-color: #40beab;
+        }
+
+        .card-2 {
+            border-left-color: #ff9a9e;
+        }
+
+        .card-3 {
+            border-left-color: #FFC300;
+        }
+       
+
+        /* Icons inside semicircle */
+        .icon-circle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 26px;
+            transform: translateY(-50%);
+            color: white;
+        }
+
+
+       
+        .card:nth-child(1) .icon-circle {
+            background: #40beab;
+        }
+
+        .card:nth-child(2) .icon-circle {
+            background: #ff9a9e;
+        }
+
+        .card:nth-child(3) .icon-circle {
+            background: #fbc531;
+        }
+
+        /* Charts Section */
+        .charts {
+            display: flex;
+            gap: 10px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+
+        .chart-container {
+            flex: 2;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container1 {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        canvas {
+            width: 100% !important;
+            height: auto !important;
+        }
+       
+        @media (max-width: 900px) {
+            .cards-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <div class="header">Daily Profit Overview</div>
+<br>
+        <!-- Cards Section -->
+        <div class="cards-container">
+            <div class="card card-1">
+                <div>
+                    <h2>Today's Profit</h2>
+                    <p>₹5,000</p>
+                </div>
+                <div class="icon-circle">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                </div>
+            </div>
+
+            <div class="card card-2">
+                <div>
+                    <h2>Yesterday's Profit</h2>
+                    <p>₹4,500</p>
+                </div>
+                <div class="icon-circle">
+                    <i class="fa-solid fa-calendar-day"></i>
+                </div>
+            </div>
+
+            <div class="card card-3">
+                <div>
+                    <h2>Last 7 Days</h2>
+                    <p>₹35,000</p>
+                </div>
+                <div class="icon-circle">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts">
+            <div class="chart-container">
+                <h2>Profit Trend (Last 7 Days)</h2>
+                <canvas  width= "100%"
+                height="50%"  id="profitTrendChart"></canvas>
+            </div>
+            <div class="chart-container1">
+                <h2>Daily Profit Analysis</h2>
+                <canvas  height="200px" width="40%" id="dailyProfitChart"></canvas>
+            </div>
+           
+        </div>
+    </div>
+
+    <script>
+        const ctx1 = document.getElementById('dailyProfitChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                labels: ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Daily Profit (₹)',
+                    data: [5000, 5200, 4800, 4900, 5300, 5100, 5500],
+                    backgroundColor: ['#FF5733', '#FFC300', '#36A2EB', '#4BC0C0', '#9966FF', '#FF9F40', '#28A745'],
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+              
+                plugins: {
+
+                    legend: {                    position: "bottom",
+                    display: true }
+                }
+            }
+        });
+
+        const ctx2 = document.getElementById('profitTrendChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Profit Trend (₹)',
+                    data: [5000, 5200, 4800, 4900, 5300, 5100, 5500],
+                    backgroundColor: ['#FF5733', /*'#FFC300', '#36A2EB', '#4BC0C0', '#9966FF', '#FF9F40', '#28A745'*/],
+                    borderRadius: 0
+                }]
+                   
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: "black" }
+                    },
+                    y: {
+                        grid: { color: "#ddd" },
+                        ticks: { color: "black" },
+
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
+

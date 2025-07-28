@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daily Demo Subscribers</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f7fa;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #2d2d2d;
+    }
+
+    .dashboard {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .card {
+      flex: 1;
+      min-width: 250px;
+      background: linear-gradient(135deg, #ffe6e6, #ffd1d1);
+      border-radius: 20px;
+      padding: 20px;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card .icon {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-size: 50px;
+      color: white;
+    }
+
+    .card h3 {
+      margin: 0;
+      color: black;
+    }
+
+    .card p {
+      color: black;
+      margin-top: 5px;
+    }
+
+    .charts {
+      margin-top: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .chart-box {
+      flex: 2;
+      min-width: 300px;
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .chart-box1 {
+      flex: 1;
+      min-width: 300px;
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .header { 
+      width: 95%;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 30px;
+            background: linear-gradient(to right, #a80077, #66ccff);
+            color: white;
+            border-radius: 10px;
+        }
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+    }
+  </style>
+</head>
+<body>
+    <div class="header">Daily Demo Subscribers Overview</div>
+    <br>
+  <div class="dashboard">
+    <div class="card" style="background: linear-gradient(135deg, #e1f5ff, #b3e5fc);">
+      <div class="icon"><i class="fas fa-user-plus"></i></div>
+      <h3>New Subscribers</h3>
+      <p>230 users signed up today</p>
+    </div>
+    <div class="card" style="background: linear-gradient(135deg, #ffecd2, #fcb69f);">
+      <div class="icon"><i class="fas fa-chart-line"></i></div>
+      <h3>Conversion Rate</h3>
+      <p>15% increase from yesterday</p>
+    </div>
+    <div class="card" style="background: linear-gradient(135deg, #fbc2eb, #a6c1ee);">
+      <div class="icon"><i class="fas fa-users-cog"></i></div>
+      <h3>Active Demos</h3>
+      <p>320 ongoing demos now</p>
+    </div>
+    <div class="card" style="background: linear-gradient(135deg, #c2ffd8, #465efb); color: white;">
+      <div class="icon"><i class="fas fa-hourglass-half"></i></div>
+      <h3>Avg Demo Time</h3>
+      <p>12 days per user</p>
+    </div>
+    <div class="card" style="background: linear-gradient(135deg, #fff3b0, #ffb347);">
+      <div class="icon"><i class="fas fa-bolt"></i></div>
+      <h3>Quick Signups</h3>
+      <p>45 users signed up under 1 min</p>
+    </div>
+    <div class="card" style="background: linear-gradient(135deg, #d9afd9, #97d9e1);">
+      <div class="icon"><i class="fas fa-sync-alt"></i></div>
+      <h3>Repeat Demos</h3>
+      <p>30 users took multiple demos</p>
+    </div>
+  </div>
+
+  <div class="charts">
+    <div class="chart-box">
+      <h3 style="text-align:center;">Daily Growth</h3>
+      <canvas id="growthChart"></canvas>
+    </div>
+    <div class="chart-box1">
+      <h3 style="text-align:center;">Demo Completion Rate</h3>
+      <canvas id="completionChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const ctx1 = document.getElementById('growthChart').getContext('2d');
+    const growthChart = new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+          label: 'Subscribers',
+          data: [120, 150, 180, 90, 140, 200, 170],
+          backgroundColor: ['#ff6384','#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40', '#8bc34a']
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { display: false }
+        },
+        
+      }
+    });
+
+    const ctx2 = document.getElementById('completionChart').getContext('2d');
+    const completionChart = new Chart(ctx2, {
+      type: 'pie',
+      data: {
+        labels: ['Completed', 'In Progress', 'Dropped'],
+        datasets: [{
+          data: [60, 25, 15],
+          backgroundColor: ['#4caf50', '#ff9800', '#f44336']
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

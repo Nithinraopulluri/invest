@@ -1,0 +1,609 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            background: white;
+            font-family: 'Inter', sans-serif;
+
+        }
+       
+        .main-content {
+            width: 100%;
+            padding: 10px;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        /* Small Scrollbar */
+        ::-webkit-scrollbar {
+           display: none;
+        }
+        .container {
+            width: 100%;
+            margin-right: 20px;
+        }
+
+        h2 {
+            align-items: center;
+            text-align: center;
+            color: black;
+        }
+
+        
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border-bottom: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background: #D9EDBF;
+            color: black;
+        }
+        
+        tr:hover {
+            background: #e9ecef;
+        }
+        
+        .no-records {
+            display: none;
+            font-size: 20px;
+            color: black;
+            margin-top: 20px;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .no-records i {
+            font-size: 30px;
+            color: black;
+           
+        }
+.search-container {
+    display: flex;
+    align-items: center;
+    border: none;
+    margin-top: 20px;
+    border-radius: 40px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1), -2px -2px 5px rgb(0, 0, 0, 0.1);
+    outline: none;
+    padding: 8px ;
+    width: 300px;
+}
+
+.search-container input {
+    border: none;
+    border-radius: 25px;
+    outline: none;
+    padding: 1px;
+    font-size: 16px;
+    color: black;
+    width: 100%;
+}
+
+.search-container i {
+    margin-right: 10px;
+    background: none;
+    border: none;
+    color: black;
+    cursor: pointer;
+    padding: 5px;
+}
+.add-btn {
+    background: #007bff;
+    color: white;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            position: absolute;
+            right: 22px;
+            top: 130px;
+
+        }
+        .form-group {
+      margin-bottom: 20px;
+      font-family: 'Inter', sans-serif;
+
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: black;
+    }
+    .form-group input
+     {
+      width: 96%;
+      padding: 12px 15px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      background-color: #f9fafb;
+      font-size: 14px;
+      color: black;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: #57B4BA;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+   
+        .formup-container {
+            display: none;
+            position: absolute;
+            margin-top: 290px;
+            margin-bottom: 20px;
+            font-family: 'Inter', sans-serif;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+       
+        .overlay {
+            position: fixed;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(128,128,128,0.6);
+            z-index: 1000;
+            display: none;
+        }
+        .popup {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            position: relative;
+        }
+        .popup1 {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 70%;
+            margin-bottom: 200px;
+            position: relative;
+        }
+        .popup h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .popup-content p {
+            margin: 5px 0;
+            font-size: 16px;
+            display: grid;
+            grid-template-columns: 150px auto;
+            row-gap: 15px;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            color: red;
+        }
+        .blurred {
+            filter: blur(5px);
+            background-color: rgba(128,128,128,0.6);
+
+        }
+        .error-message { 
+    color: red; 
+    font-size: 12px; 
+}
+.header { 
+    width: 95%;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 30px;
+            background: linear-gradient(to right, #a80077, #66ccff);
+            color: white;
+            border-radius: 10px;
+        }
+
+        
+    </style>
+</head>
+<body>
+   
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+
+    <div class="container" id="container">
+        <div class="header">    Referral Subscribers List
+        </div>
+
+
+        
+        <div class="search-container">
+            <input  type="text" id="searchInput" placeholder="Search..." >
+            <i class="fa-solid fa-search search-icon" onclick="searchTable()"></i>
+        </div>
+        <button class="btn add-btn" onclick="openAddForm()">Add New User</button>
+
+        <table id="subscribersTable">
+            <thead>
+                <tr>
+                    <th>Sl. No</th>
+                    <th>Date</th>
+                    <th>Referral ID</th>
+                    <th>Trading View ID</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Expiry Date</th>
+                    <th>Remaining Days</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <tr>
+                    <td>1</td>
+                    <td>2025-03-15</td>
+                    <td>REF123</td>
+                    <td>TRD56789</td>
+                    <td>9876543210</td>
+                    <td>user1@example.com</td>
+                    <td>2025-12-31</td>
+                    <td>290</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>2025-03-15</td>
+                    <td>REF124</td>
+                    <td>TRD56788</td>
+                    <td>9876543211</td>
+                    <td>user2@example.com</td>
+                    <td>2025-08-31</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>2025-03-15</td>
+                    <td>REF123</td>
+                    <td>TRD56787</td>
+                    <td>9876543212</td>
+                    <td>user3@example.com</td>
+                    <td>2025-09-21</td>
+                    <td>190</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>2025-03-15</td>
+                    <td>REF124</td>
+                    <td>TRD56786</td>
+                    <td>9876543213</td>
+                    <td>user4@example.com</td>
+                    <td>2025-10-11</td>
+                    <td>220</td>
+                    
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>2025-03-15</td>
+                    <td>REF125</td>
+                    <td>TRD56785</td>
+                    <td>9876543214</td>
+                    <td>user5@example.com</td>
+                    <td>2025-11-21</td>
+                    <td>250</td>
+                   
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>2025-03-15</td>
+                    <td>REF126</td>
+                    <td>TRD56784</td>
+                    <td>9876543215</td>
+                    <td>user6@example.com</td>
+                    <td>2025-09-31</td>
+                    <td>190</td>
+                    
+                </tr>
+                    
+            </tbody>
+            
+        </table>
+        <div class="no-records" id="noRecords">
+            <img  src="C:\Users\LENOVO L480\Desktop\photos\nodata3.png" style="height: 300px; width: 300px; margin-top: -30px;">
+
+        </div>
+    </div>
+</div>
+<div class="formup-container" id="addPopup">
+    <div class="popup1">
+
+        <span class="close-btn" onclick="closeAddPopup()">×</span>
+        <h2 style="text-align: center;">Add New User</h2>
+        <form  action="/submit" method="POST"  id="subscriberForm">
+
+        <div class="form-group">
+            <label>Date:</label>
+                <input type="date" id="date" name="date" required>
+                <div class="error-message" id="dateError"></div>
+                </div>
+                <div class="form-group">
+
+                <label>Referral ID</label>
+                <input type="text" id="referralId" name="referral_id" placeholder="Referral ID (AAA123)" required>
+                <div class="error-message" id="referralIdError"></div></div>
+                <div class="form-group">
+
+                    <label>Tradingview ID</label>
+                <input type="text" id="tradingViewId" name="trading_view_id" placeholder="Trading View ID (AA123)" required>
+                <div class="error-message" id="tradingViewIdError"></div></div>
+
+                <div class="form-group">
+
+                <label>Expiry Date:</label>
+                <input type="date" id="expiryDate" name="expiry_date" required>
+                <div class="error-message" id="expiryDateError"></div></div>
+                <div class="form-group">
+
+                    <label>Phone Number</label>
+                <input type="text" id="phone" name="phone_number" placeholder="Phone (10 digits)" required>
+                <div class="error-message" id="phoneError"></div></div>
+                <div class="form-group">
+
+                    <label>Email</label>
+                <input type="email" id="email" name="email" placeholder="Email" required>
+                <div class="error-message" id="emailError"></div></div>
+
+                <div class="form-group">
+
+                    <label>Remaining Days</label>
+                <input type="text" id="remainingDays" name="remaining_days" placeholder="Remaining Days" required>
+                <div class="error-message" id="remainingDaysError"></div></div>
+
+                <button class="submit-btn" onclick="addEntry()">Add</button></form>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    
+    function closePopup() {
+        document.getElementById("viewPopup").style.display = "none";
+        document.getElementById("container").classList.remove("blurred");
+
+    }
+
+    function deleteRow(button) {
+        if (confirm("Are you sure you want to delete this entry?")) {
+            button.closest("tr").remove();
+        }
+    }
+
+    function openAddForm() {
+        document.getElementById("addPopup").style.display = "flex";
+        document.getElementById("container").classList.add("blurred");
+
+    }
+
+    function closeAddPopup() {
+        document.getElementById("addPopup").style.display = "none";
+        document.getElementById("container").classList.remove("blurred");
+
+    }
+  /*  function validateInput(id, pattern, errorMessage) {
+    let input = document.getElementById(id);
+    let errorDiv = document.getElementById(id + "Error");
+
+    if (!pattern.test(input.value)) {
+        errorDiv.innerText = errorMessage;
+        return false;
+    }
+
+    errorDiv.innerText = "";
+    return true;
+}
+
+function isToday(dateStr) {
+    const inputDate = new Date(dateStr);
+    const today = new Date();
+    return (
+        inputDate.getFullYear() === today.getFullYear() &&
+        inputDate.getMonth() === today.getMonth() &&
+        inputDate.getDate() === today.getDate()
+    );
+}
+
+function isValidExpiry(dateStr) {
+    const inputDate = new Date(dateStr);
+    const today = new Date();
+    const twoYearsLater = new Date();
+    twoYearsLater.setFullYear(today.getFullYear() + 2);
+
+    inputDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    return inputDate >= today && inputDate <= twoYearsLater;
+}
+
+function calculateRemainingDays(startDate, endDate) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diff = Math.floor((end - start) / (1000 * 60 * 60 * 24));
+    return diff >= 0 ? diff : 0;
+}
+
+document.getElementById("phone").addEventListener("input", function () {
+    this.value = this.value.replace(/\D/g, "").slice(0, 10);
+});
+
+document.getElementById("expiryDate").addEventListener("input", function () {
+    const start = document.getElementById("date").value;
+    const end = this.value;
+    if (start && end) {
+        document.getElementById("remainingDays").value = calculateRemainingDays(start, end);
+    }
+});
+
+function addEntry() {
+    let isValid = true;
+
+    const dateVal = document.getElementById("date").value;
+    const expiryVal = document.getElementById("expiryDate").value;
+
+    if (!isToday(dateVal)) {
+        document.getElementById("dateError").innerText = "Date must be today";
+        isValid = false;
+    } else {
+        document.getElementById("dateError").innerText = "";
+    }
+
+    if (!isValidExpiry(expiryVal)) {
+        document.getElementById("expiryDateError").innerText = "Expiry must be today to 2 years later";
+        isValid = false;
+    } else {
+        document.getElementById("expiryDateError").innerText = "";
+    }
+
+    isValid &= validateInput("referralId", /^[A-Z]{3}\d{3}$/, "Format: AAA123");
+    isValid &= validateInput("tradingViewId", /^[A-Z]{2}\d{3}$/, "Format: AA123");
+    isValid &= validateInput("phone", /^\d{10}$/, "Enter a valid 10-digit phone number");
+
+    const emailPattern = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)?@(gmail|outlook)\.(com|org|in|co)$/;
+    isValid &= validateInput("email", emailPattern, "Invalid email");
+
+    const remainingDays = document.getElementById("remainingDays").value;
+    isValid &= validateInput("remainingDays", /^\d+$/, "Remaining days must be valid");
+
+    if (!isValid) return;
+
+    let tableBody = document.getElementById("table-body");
+    let newRow = document.createElement("tr");
+
+    newRow.innerHTML = `
+        <td>${tableBody.children.length + 1}</td>
+        <td>${dateVal}</td>
+        <td>${document.getElementById("referralId").value}</td>
+        <td>${document.getElementById("tradingViewId").value}</td>
+        <td>${document.getElementById("phone").value}</td>
+        <td>${document.getElementById("email").value}</td>
+        <td>${expiryVal}</td>
+        <td>${remainingDays}</td>
+    `;
+
+    tableBody.appendChild(newRow);
+    document.getElementById("myForm").reset();
+    document.getElementById("remainingDays").value = "";
+    closeAddPopup(); 
+}*/
+    function searchTable() {
+            let input = document.getElementById("searchInput").value.trim();
+            let table = document.getElementById("subscribersTable");
+            let rows = table.getElementsByTagName("tr");
+            let noRecordsMessage = document.getElementById("noRecords");
+
+           
+            let found = false;
+
+            for (let i = 1; i < rows.length; i++) {
+                let rowText = rows[i].textContent.trim();
+                if (rowText.includes(input)) {
+                    rows[i].style.display = "";
+                    found = true;
+                } else {
+                    rows[i].style.display = "none";
+                }
+
+            }
+
+            // Show "No Records Found" if nothing matches
+            noRecordsMessage.style.display = found ? "none" : "flex";
+        }
+        document.getElementById("searchInput").addEventListener("keyup", function(){
+            if(this.value === "" ) {
+                let table = document.getElementById("subscribersTable");
+                let rows = table.getElementsByTagName("tr");
+                for (let i = 1; i < rows.length; i++) {
+                    rows[i].style.display = "";
+                }
+                document.getElementById("noRecordsMessage").style.display = "none";
+            }
+        });
+       
+        function validateInput(id, pattern, errorMessage) {
+    let input = document.getElementById(id);
+    let errorDiv = document.getElementById(id + "Error");
+
+    if (!pattern.test(input.value)) {
+        errorDiv.innerText = errorMessage;
+        return false;
+    }
+
+    errorDiv.innerText = "";
+    return true;
+}
+
+function addEntry() {
+    let isValid = true;
+
+    isValid &= validateInput("referralId", /^[A-Z]{3}\d{3}$/, "Format: AAA123");
+    isValid &= validateInput("tradingViewId", /^[A-Z]{2}\d{3}$/, "Format: AA123");
+   
+    isValid &= validateInput("phone", /^\d{10}$/, "Enter a valid 10-digit phone number");
+    isValid &= validateInput("email", /^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Enter a valid email");
+    isValid &= validateInput("remainingDays", /^\d+$/, "Enter a valid number");
+
+    if (!isValid) return;
+
+    let tableBody = document.getElementById("table-body");
+    let newRow = document.createElement("tr");
+
+
+    newRow.innerHTML = `
+        <td>${tableBody.children.length + 1}</td>
+        <td>${document.getElementById("date").value}</td>
+        <td>${document.getElementById("referralId").value}</td>
+        <td>${document.getElementById("tradingViewId").value}</td>
+        <td>${document.getElementById("phone").value}</td>
+        <td>${document.getElementById("email").value}</td>
+
+        <td>${document.getElementById("expiryDate").value}</td>
+        <td>${document.getElementById("remainingDays").value}</td>
+      
+    `;
+   
+    tableBody.appendChild(newRow);
+    closeAddPopup();
+}
+
+       
+</script>
+
+</body>
+</html>

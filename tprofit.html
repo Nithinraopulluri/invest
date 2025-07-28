@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total Profit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { padding: 20px; background: white; }
+        .container { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 20px;
+            max-width: 1200px;
+            margin: auto;
+            overflow-y: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        /* Small Scrollbar */
+        ::-webkit-scrollbar {
+           display: none;
+        }
+        .header { 
+            width: 100%;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 30px;
+            background: linear-gradient(to right, #a80077, #66ccff);
+            color: white;
+            border-radius: 10px;
+        }
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            justify-content: space-between;
+            
+        }
+        /* Cards Section */
+        .cards-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            position: relative;
+            flex: 1;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out;
+            border-top: 8px solid rgb(205, 205, 253);
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card h2 {
+            font-size: 16px;
+            color: black;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            font-size: 20px;
+            margin-top: 20px;
+            color: black;
+        }
+
+        
+
+       
+        /* Icons inside semicircle */
+        .icon-circle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            width: 60px;
+            height: 60px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 26px;
+            transform: translateY(-50%);
+            color: white;
+        }
+
+        .chart-container {
+            width: 90%;
+            height: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+        canvas {
+            width: 100% !important;
+            height: 400px !important;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Total Profit Overview</div>
+
+        <!-- Stats Section -->
+        <div class="cards-container">
+            <div class="card ">
+                <div>
+                <h3>Total Profit This Year</h3>
+                <p>₹1,20,00,000</p>
+                </div>
+                <div class="icon-circle" style="background: #FFC300;">
+                    <i class="fa-solid fa-chart-line"></i>
+
+            </div>
+            </div>
+            <div class="card">
+                <div>
+                <h3>Monthly Average Profit</h3>
+                <p>₹10,00,000</p>
+                </div>
+                <div class="icon-circle" style="background: #FF5733;">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+
+            </div>
+            </div>
+            <div class="card">
+                <div>
+                <h3>Highest Monthly Profit</h3>
+                <p>₹12,00,000 (Dec)</p></div>
+                <div class="icon-circle" style="background: #28A745;">
+                    <i class="fa-solid fa-arrow-up"></i>
+            </div>
+            </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="chart-container">
+            <h2 style="text-align: center;">Monthly Profits</h2>
+            <br>
+            <canvas id="profitChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        var ctx = document.getElementById('profitChart').getContext('2d');
+        var profitChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                datasets: [{
+                    label: 'Monthly Profit (₹)',
+                    data: [800000, 850000, 900000, 920000, 950000, 980000, 800000, 1050000, 1000000, 1150000, 1120000, 1200000],
+                    backgroundColor: [ '#FF5733',/* '#33FF57', '#3357FF', '#FF33A1', '#FFD700', '#A52A2A', '#40E0D0', '#FF7F50', '#9370DB', '#008080', '#DC143C', '#00008B',*/ ],
+                    borderColor: 'transparent',
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: "false" } },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

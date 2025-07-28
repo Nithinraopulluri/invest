@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background: linear-gradient(135deg,rgb(235, 237, 140), #b1e3ee, #da98f5);
+         
+        }       
+        .login-section {
+            width: 50%;
+            background: transparent;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        
+        .input-box {
+            width: 60%;
+            padding: 10px;
+            position: relative;
+            margin: 10px 5px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid white;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            background: WHITE;
+        }
+
+        .input-box label {
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            padding-left: 25;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: black;
+            transition: 0.3s;
+        }
+
+        .input-box input:focus + label,
+        .input-box input:valid + label {
+            top: 0;
+            left: 10px;
+            font-size: 20px;
+            color: black;
+            background: transparent;
+            padding: 0 5px;
+        }
+
+        button {
+            width: 60%;
+            background: black;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        p {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        a {
+            color: #0f0f15;
+            text-decoration: none;
+        }
+
+        /* Right Section - Styled Half */
+        .right-section {
+            width: 50%;
+            background: transparent;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .right-section img {
+            max-width: 80%;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+   
+    
+         <!-- Right: Image / Message Section -->
+         <div class="right-section">
+            <br></br>
+            <h1>Welcome Back!</h1>
+
+
+            <img src="login-Photoroom.png">
+            
+            
+        </div>
+        <!-- Left: Login Form -->
+        <div class="login-section">
+            <center><h2>Login</h2></center>
+            <form>
+            <center><div class="input-box">
+                    <input type="email" required>
+                    <label>Email</label>
+                </div></center>
+            <center><div class="input-box">
+                    <input type="password" required>
+                    <label>Password</label>
+                </div></center>
+                <center><a href="forgotpassword.html">ForgotPassword</a></center>
+            <center><button class="action-btn" onclick="login()">Login</button><center>
+            </form>
+            <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+        </div>
+
+       
+    
+    <script>
+        function login() {
+            let email = document.getElementById("loginEmail").value;
+            let password = document.getElementById("loginPassword").value;
+            let userData = JSON.parse(localStorage.getItem(email));
+
+            if (userData && userData.password === password) {
+                alert("Login Successful!");
+                showPage('dashboardPage');
+            } else {
+                alert("Invalid Credentials!");
+            }
+        }
+    </script>
+</body>
+</html>

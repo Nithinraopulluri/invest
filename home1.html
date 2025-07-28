@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background: white;
+            padding: 20px;
+        }
+       
+        .main-content {
+            width: 100%;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        /* Small Scrollbar */
+        ::-webkit-scrollbar {
+           display: none;
+        }
+        .cards {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 20px;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+    .card1 {
+        flex: 1;
+      width: 280px;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 8px 8px 15px rgba(0,0,0,0.1), 10px 10px 10px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease-in-out;
+
+    }
+    .card {
+        flex: 1;
+      width: 280px;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 8px 8px 15px rgba(0,0,0,0.1), 10px 10px 10px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease-in-out;
+
+    }
+
+    .card-icon {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 80px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #eef3ff;
+      clip-path: polygon(50% 0, 100% 0%, 100% 100%, 50% 100%, 0 50%);
+    }
+
+    .card-icon i {
+      font-size: 28px;
+      color: #3b82f6;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .card p {
+        margin: 10px 0 0;
+      color: black;
+      text-align: left;
+    }
+
+        .charts {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .chart-container {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container1 {
+            flex: 2;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        canvas {
+            width: 100% !important;
+            height: auto !important;
+        }
+        .header { 
+            position: relative;
+      background: linear-gradient(to right, #a80077, #66ccff);
+      color: white;
+      padding: 30px;
+      margin-top: 0px;
+      display: flex;
+      border-radius: 25px;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      font-weight: 600;
+      overflow: hidden;
+        }
+        .circle, .triangle {
+      position: absolute;
+      opacity: 0.3;
+    }
+
+    .circle {
+      width: 80px;
+      height: 80px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .triangle {
+      width: 0;
+      height: 0;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-bottom: 90px solid white;
+    }
+
+    .circle.one { top: 30px; left: 50px; }
+    .circle.two { bottom: 20px; right: 80px; }
+    .circle.three { top: 40px; left: 350px; }
+    .triangle.one { top: 40px; right: 40px; transform: rotate(30deg); }
+    .triangle.two { bottom: 30px; left: 60px; transform: rotate(-45deg); }
+    </style>
+</head>
+<body>
+
+    
+ 
+   
+
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+            <div class="header">Trading Dashboard
+               
+            </div>
+        <!-- Profit Cards -->
+        <div class="cards" id="profit">
+            <div class="card1">
+                <h3>Total Profit</h3>
+                <div class="card-icon"> <i class="fa-solid fa-arrow-up"></i></div>
+
+                <br>
+                <p style="font-size: 30px;"> ₹1,20,00,000</p>
+            </div>
+            <div class="card1">
+                <h3>Monthly Profit </h3>
+                <div class="card-icon"> <i class="fa-solid fa-chart-line"></i></div>
+
+                <br>
+                <p style="font-size: 30px;"> ₹10,00,000</p>
+            </div>
+            <div class="card1">
+                <h3>Daily Profit</h3>
+                <div class="card-icon"> <i class="fa-solid fa-arrow-trend-down"></i></div>
+
+                <br>
+                <p style="font-size: 30px;"> ₹50,000</p>
+            </div>
+        </div>
+
+        
+
+        <!-- Charts Section -->
+        <div class="charts" id="revenue">
+            <div class="chart-container1">
+                <h3>Monthly Revenue</h3>
+                <canvas  id="monthlyRevenueChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Daily Revenue (Last 7 Days)</h3>
+                <br>
+                <canvas  id="dailyRevenueChart"></canvas>
+            </div>
+           
+        </div>
+<!-- Subscribers Count -->
+<div class="cards" id="subscribers">
+    <div class="card">
+        <h4>Total Paid Subscribers</h4>
+        <div class="card-icon"> <i class="fa-solid fa-users"></i></div>
+        
+        <br>
+         <p style="font-size: 30px;">5000</p>
+        </div>
+    <div class="card">
+        <h4>Monthly Paid Subscribers</h4>
+        <div class="card-icon"> <i class="fa-solid fa-calendar"></i></div>
+        <br>
+        <p style="font-size: 30px;">1200</p>
+        </div>
+    <div class="card">
+        <h4>Daily Paid Subscribers</h4>
+        <div class="card-icon"> <i class="fa-solid fa-user-check"></i></div>
+        <br>
+        <p style="font-size: 30px;">150</p>
+        </div>
+    <div class="card">
+        <h4>Daily Demo Subscribers</h4>
+        <div class="card-icon"> <i class="fa-solid fa-hourglass-half"></i></div>
+        <br>
+        <p style="font-size: 30px;">75</p>
+        </div>
+</div>
+        <div class="charts">
+            <div class="chart-container1">
+                
+                <h3>Monthly Commission to Pay</h3>
+                <canvas  id="monthlyCommissionChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Daily Commission to Pay (Last 7 Days)</h3>
+                <canvas id="dailyCommissionChart"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      
+        function showSection(section) {
+            document.querySelectorAll(".cards, .charts").forEach(e => e.style.display = "none");
+            document.getElementById(section).style.display = "flex";
+        }
+        // Monthly Revenue (Line Chart)
+        new Chart(document.getElementById("monthlyRevenueChart"), {
+            type: "bar",
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                datasets: [{
+                    label: "Monthly Revenue (INR)",
+                    data: [15000, 12000, 14000, 13000, 15000, 17000, 16000, 18000, 19000, 21000, 18000, 24000],
+                    backgroundColor: ["#fca5a5",
+             ],
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: "false" } },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Monthly Commission (Area Chart)
+        new Chart(document.getElementById("monthlyCommissionChart"), {
+            type: "line",
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                datasets: [{
+                    label: "Monthly Commission (INR)",
+                    data: [2700, 2500, 2200, 2300, 2700, 2900, 2800, 3000, 3200, 3400, 3200, 3800],
+                    borderColor: "#28a745",
+                    backgroundColor: "rgba(40, 167, 69, 0.2)",
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: "false" } },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Daily Revenue (Bar Chart)
+        new Chart(document.getElementById("dailyRevenueChart").getContext('2d'),
+         {
+
+            type: "doughnut",
+            data: {
+                labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                datasets: [{
+                    label: "Daily Revenue (INR)",
+                    data: [2000, 2500, 2200, 3000, 2700, 3500, 3800],
+                    backgroundColor: ['#FF5733', '#FFC300', '#36A2EB', '#4BC0C0', '#9966FF', '#FF9F40', '#28A745'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: "bottom" } }
+            }
+        });
+
+        // Daily Commission (Pie Chart)
+        new Chart(document.getElementById("dailyCommissionChart"), {
+            type: "doughnut",
+            data: {
+                labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                datasets: [{
+                    label: "Daily Commission (INR)",
+                    data: [400, 450, 500, 550, 600, 650, 700],
+                    backgroundColor: ['#FF5733', '#FFC300', '#36A2EB', '#4BC0C0', '#9966FF', '#FF9F40', '#28A745'],
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: "bottom" } }
+            }
+        });
+       
+    </script>
+
+</body>
+</html>

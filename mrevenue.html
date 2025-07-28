@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monthly Revenue Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: white;
+      margin: 0;
+      padding: 30px;
+      color: black;
+    }
+
+    .dashboard-title {
+      width: 96%;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 30px;
+            background: linear-gradient(to right, #a80077, #66ccff);
+            color: white;
+            border-radius: 10px;
+    }
+
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: left;
+      gap: 20px;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      width: 240px;
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 8px 8px 15px rgba(0,0,0,0.1), 10px 10px 10px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-icon {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 80px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #eef3ff;
+      clip-path: polygon(50% 0, 100% 0%, 100% 100%, 50% 100%, 0 50%);
+    }
+
+    .card-icon i {
+      font-size: 28px;
+      color: #3b82f6;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .card p {
+      margin: 10px 0 0;
+      font-size: 16px;
+      color: black;
+    }
+
+    .growth {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .growth span {
+      font-weight: bold;
+    }
+
+    .growth.up {
+      color: green;
+    }
+
+    .growth.down {
+      color: red;
+    }
+
+    .charts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .chart-box {
+      flex: 2;
+      min-width: 320px;
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+    }
+    .chart-box1 {
+      flex: 1;
+      min-width: 320px;
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+    }
+
+    .chart-box h4 {
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-title">
+    Monthly Revenue Dashboard</div>
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+      <h3>Total Revenue</h3>
+      <p>₹8,40,000</p>
+      <div class="growth up"><i class="fas fa-arrow-up"></i> <span>12% increase</span>vs last month</div>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i class="fas fa-wallet"></i></div>
+      <h3>Monthly Profit</h3>
+      <p>₹3,50,000</p>
+      <div class="growth up"><i class="fas fa-arrow-up"></i> <span>8.4% growth</span></div>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i class="fas fa-arrow-trend-down"></i></div>
+      <h3>Commission Paid</h3>
+      <p>₹1,20,000</p>
+      <div class="growth down"><i class="fas fa-arrow-down"></i> <span>-5.3%</span></div>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i class="fas fa-user-check"></i></div>
+      <h3>New Subscribers</h3>
+      <p>1,450</p>
+      <div class="growth up"><i class="fas fa-arrow-up"></i> <span>10.5%</span></div>
+    </div>
+   
+  
+  </div>
+  
+
+  <div class="charts">
+    <div class="chart-box">
+      <h4>Monthly Revenue</h4>
+      <canvas id="revenueChart"></canvas>
+    </div>
+    <div class="chart-box1">
+      <h4>Commission Distribution</h4>
+      <canvas id="commissionChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const revenueChart = new Chart(document.getElementById("revenueChart"), {
+      type: "bar",
+      data: {
+        labels: [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ],
+        datasets: [
+          {
+            label: "Revenue (₹)",
+            data: [65000, 75000, 82000, 90000, 94000, 102000, 97000, 99000, 88000, 110000, 115000, 120000],
+            backgroundColor: [
+              "#fca5a5",
+              "#fdba74",
+              "#fcd34d",
+              "#bef264",
+              "#86efac",
+              "#5eead4",
+              "#67e8f9",
+              "#a5b4fc",
+              "#c4b5fd",
+              "#f0abfc",
+              "#f9a8d4",
+              "#fda4af",
+            ],
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+        scales: {
+          x: {
+            ticks: { color: "black" },
+            grid: { display: false },
+          },
+          y: {
+            beginAtZero: true,
+            ticks: { color: "black" },
+            grid: { color: "#eee" },
+          },
+        },
+      },
+    });
+
+    const commissionChart = new Chart(document.getElementById("commissionChart"), {
+      type: "doughnut",
+      data: {
+        labels: ["Sales Team", "Support", "Marketing", "Others"],
+        datasets: [
+          {
+            data: [50000, 30000, 25000, 15000],
+            backgroundColor: ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"],
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: { color: "black" },
+          },
+        },
+      },
+    });
+  </script>
+</body>
+</html>
